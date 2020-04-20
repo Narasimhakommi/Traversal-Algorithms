@@ -1,0 +1,98 @@
+//build tree with post,in order traversals
+//build tree with pre,in order traversals 
+import java.util.*;
+class BinaryTree
+{
+   class Node
+   {
+   	Node left;
+   	Node right;
+   	int data;
+   }
+   Node root;
+   int preoind=0;
+   public void preInOrder(int in[],int pre[])
+   {
+   	 HashMap<Integer,Integer> h1=new HashMap<>();
+   	 for(int i=0;i<in.length;i++)
+   	 {
+   	 	h1.put(in[i],i);
+   	 }
+   	 this.root=preInOrderTree(in,pre,0,in.length-1,h1);
+   	 System.out.println("post order traversal is:");
+   	 postOrder(this.root);
+   }
+  
+   public Node preInOrderTree(int in[],int pre[],int lo,int hi,HashMap<Integer,Integer> h1)
+   {
+   	if(lo>hi)
+   	{
+   		return null;
+   	}
+   	Node n1=new Node();
+   	n1.data=pre[preoind++];
+   	int inoind=h1.get(n1.data);
+   	n1.left=preInOrderTree(in,pre,lo,inoind-1,h1);
+   	n1.right=preInOrderTree(in,pre,inoind+1,hi,h1);
+   	return n1;
+   }
+   int postoind;
+   public void postInorder(int in[],int post[])
+   {
+     postoind=post.length-1;
+   	 HashMap<Integer,Integer> h1=new HashMap<Integer,Integer>();
+   	 for(int i=0;i<in.length;i++)
+   	 {
+   	 	h1.put(in[i],i);
+   	 }
+   	 this.root=postInorderTree(in,post,0,in.length-1,h1);
+   	 System.out.println("pre order traversal is: ");
+   	 preOrder(this.root);
+   }
+   public Node postInorderTree(int in[],int post[],int lo,int hi,HashMap<Integer,Integer> h1)
+   {
+   	if(lo>hi)
+   	{
+   		return null;
+   	}
+   	 Node n1=new Node();
+   	 n1.data=post[postoind--];
+   	 int inoind=h1.get(n1.data);
+   	  n1.right=postInorderTree(in,post,inoind+1,hi,h1);
+   	 n1.left=postInorderTree(in,post,lo,inoind-1,h1);
+   	 return n1;
+   }
+    public void postOrder(Node n1)
+   {
+   	if(n1==null)
+   	{
+   		return;
+   	}
+   	postOrder(n1.left);
+   	postOrder(n1.right);
+   	System.out.print(n1.data+" ");
+   }
+   public void preOrder(Node n1)
+   {
+   	if(n1==null)
+   	{
+   		return;
+   	}
+   	System.out.print(n1.data+" ");
+   	preOrder(n1.left);
+   	preOrder(n1.right);
+   }
+}
+class Kommi
+{
+	public static void main(String args[])
+	{
+		BinaryTree tree=new BinaryTree();
+	   int in[]={10,20,30,40,50,60,70};
+	  int pre[]={40,20,10,30,60,50,70};
+	  int post[]={10,30,20,50,70,60,40};
+       tree.preInOrder(in,pre);
+       //tree.postInorder(in,post);
+
+	}
+}
